@@ -3,6 +3,8 @@ import "dotenv/config";
 import path from "path";
 import { fileURLToPath } from "url";
 import ejs from "ejs";
+import Routes from "./routes/index.js"
+import cors from "cors";
 // import { sendEmail } from "./config/mail.js";
 
 const app: Application = express();
@@ -13,12 +15,14 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+app.use(cors())
 
 // * Set view engine
 app.set("view engine", "ejs");
 app.set("views", path.resolve(__dirname, "./views"));
 
 //Routes
+app.use(Routes)
 
 app.get("/", async (req: Request, res: Response) => {
   try {
