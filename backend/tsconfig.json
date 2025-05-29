@@ -4,7 +4,7 @@
         "module": "ESNext",
         "moduleResolution": "Node",
         "outDir": "dist",
-        "rootDirs": ["src"],
+        "rootDirs": ["src", "src/custom-types.d.ts"],
         "esModuleInterop": true,
         "skipLibCheck": true,
         "strict": true,

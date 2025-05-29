@@ -1,5 +1,6 @@
 import { z } from "zod";
 
+// rgister schema
 export const registerSchema = z
   .object({
     name: z
@@ -19,3 +20,12 @@ export const registerSchema = z
     message: "Password and Confirm Password doesn't match.",
     path: ["confirm_password"],
   });
+
+  // login schema
+  export const loginSchema = z.object({
+    email: z
+      .string({ message: "Email is required." })
+      .email({ message: "Must be a correct email." }),
+    password: z
+      .string({ message: "Password is required." })
+  })
