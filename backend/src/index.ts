@@ -3,7 +3,7 @@ import "dotenv/config";
 import path from "path";
 import { fileURLToPath } from "url";
 import ejs from "ejs";
-import Routes from "./routes/index.js"
+import Routes from "./routes/index.js";
 import cors from "cors";
 // import { sendEmail } from "./config/mail.js";
 
@@ -15,14 +15,15 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(cors())
+app.use(cors());
+app.use(appLimiter);
 
 // * Set view engine
 app.set("view engine", "ejs");
 app.set("views", path.resolve(__dirname, "./views"));
 
 //Routes
-app.use(Routes)
+app.use(Routes);
 
 app.get("/", async (req: Request, res: Response) => {
   try {
@@ -30,7 +31,11 @@ app.get("/", async (req: Request, res: Response) => {
       name: "Champak",
     });
     // await sendEmail("dipog38626@inkight.com", "Test Subject", html);
-    await emailQueue.add(emailQueueName,{ to: "dipog38626@inkight.com", subject: "Test using redis", body : html })
+    await emailQueue.add(emailQueueName, {
+      to: "dipog38626@inkight.com",
+      subject: "Test using redis",
+      body: html,
+    });
     res.json({ message: "Email sent successfully" });
   } catch (error) {
     console.error(error);
@@ -39,8 +44,9 @@ app.get("/", async (req: Request, res: Response) => {
 });
 
 // *redis
-import './jobs/index.js'
+import "./jobs/index.js";
 import { emailQueue, emailQueueName } from "./jobs/emailJob.js";
+import { appLimiter } from "./config/rateLimit.js";
 
 app.listen(PORT, () => {
   console.log(`Server running successfully on port - ${PORT}`);

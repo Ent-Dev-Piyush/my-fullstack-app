@@ -1,14 +1,17 @@
-import { z } from "zod";
+import z from "zod";
 
-// register schema
-export const registerSchema = z
+export const forgetPasswordSchema = z.object({
+  email: z
+    .string({ message: "Email is required." })
+    .email({ message: "Email must be a correct email." }),
+});
+
+export const resetPasswordSchema = z
   .object({
-    name: z
-      .string({ message: "Name is required" })
-      .min(3, { message: "Name must be 3 characters long." }),
     email: z
       .string({ message: "Email is required." })
       .email({ message: "Must be a correct email." }),
+    token: z.string({ message: "Token is required." }),
     password: z
       .string({ message: "Password is required." })
       .min(6, { message: "At least 6 characters long." }),
@@ -20,12 +23,3 @@ export const registerSchema = z
     message: "Password and Confirm Password doesn't match.",
     path: ["confirm_password"],
   });
-
-  // login schema
-  export const loginSchema = z.object({
-    email: z
-      .string({ message: "Email is required." })
-      .email({ message: "Must be a correct email." }),
-    password: z
-      .string({ message: "Password is required." })
-  })
